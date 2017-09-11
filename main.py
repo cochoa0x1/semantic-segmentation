@@ -156,7 +156,6 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     sess.run(tf.global_variables_initializer())
     #sess.run(tf.local_variables_initializer())
 
-    k = 0
     for e in range(epochs):
         for img, label, in get_batches_fn(batch_size):
             feed_dict={input_image:img,
@@ -167,10 +166,6 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
             _, loss = sess.run([train_op,cross_entropy_loss], feed_dict=feed_dict)
 
             print('epoch %i, loss: %f'%(e,loss))
-
-            k+=1
-            if(k > 10):
-                break
 
 tests.test_train_nn(train_nn)
 
@@ -209,7 +204,7 @@ def run():
 
 
         # TODO: Train NN using the train_nn function
-        train_nn(sess, 5, 8, get_batches_fn, train_op, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
+        train_nn(sess, 20, 32, get_batches_fn, train_op, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
 
         # TODO: Save inference data using helper.save_inference_samples
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, image_input)
