@@ -75,33 +75,39 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     #vgg_layer7_out = tf.stop_gradient(vgg_layer7_out)
 
     _input = tf.layers.conv2d(vgg_layer7_out, num_classes,1 ,strides=(1,1), padding='same',
+                                kernel_initializer= tf.random_normal_initializer(stddev=0.01),
                                 kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
 
     #print('vgg7_conv1x1',_input.get_shape())
 
     layer8 = tf.layers.conv2d_transpose(_input, num_classes,4,strides=(2,2), padding='same',
+                                kernel_initializer= tf.random_normal_initializer(stddev=0.01),
                                 kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
 
 
     #print('layer8',layer8.get_shape())
 
     _input_skip = tf.layers.conv2d(vgg_layer4_out, num_classes,1 ,strides=(1,1), padding='same',
+                                kernel_initializer= tf.random_normal_initializer(stddev=0.01),
                                 kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
     
     _input = tf.add(_input_skip, layer8)
 
     layer9 = tf.layers.conv2d_transpose(_input, num_classes,4,strides=(2,2), padding='same',
+                                kernel_initializer= tf.random_normal_initializer(stddev=0.01),
                                 kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
 
 
     #print('layer9',layer9.get_shape())
 
     _input_skip = tf.layers.conv2d(vgg_layer3_out, num_classes,1 ,strides=(1,1), padding='same',
+                                kernel_initializer= tf.random_normal_initializer(stddev=0.01),
                                 kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
     
     _input = tf.add(_input_skip, layer9)
 
     layer10 = tf.layers.conv2d_transpose(_input, num_classes,16,strides=(8,8), padding='same',
+                                kernel_initializer= tf.random_normal_initializer(stddev=0.01),
                                 kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
 
 
@@ -160,7 +166,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
             feed_dict={input_image:img,
                       correct_label:label,
                       keep_prob:.5,
-                      learning_rate:5e-4}
+                      learning_rate:1e-4}
 
             _, loss = sess.run([train_op,cross_entropy_loss], feed_dict=feed_dict)
 
@@ -203,7 +209,7 @@ def run():
 
 
         # TODO: Train NN using the train_nn function
-        train_nn(sess, 20, 16, get_batches_fn, train_op, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
+        train_nn(sess, 40, 8, get_batches_fn, train_op, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
 
         # TODO: Save inference data using helper.save_inference_samples
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, image_input)
