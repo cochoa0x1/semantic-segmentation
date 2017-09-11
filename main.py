@@ -101,10 +101,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     
     _input = tf.add(_input_skip, layer9)
 
-    layer101 = tf.layers.conv2d_transpose(_input, num_classes,4,strides=(4,4), padding='same',
-                                kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-4))
-
-    layer10 = tf.layers.conv2d_transpose(layer101, num_classes,4,strides=(4,4), padding='same',
+    layer10 = tf.layers.conv2d_transpose(_input, num_classes,16,strides=(8,8), padding='same',
                                 kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-4))
 
 
@@ -162,8 +159,8 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
         for img, label, in get_batches_fn(batch_size):
             feed_dict={input_image:img,
                       correct_label:label,
-                      keep_prob:.5,
-                      learning_rate:1e-4}
+                      keep_prob:.25,
+                      learning_rate:5e-5}
 
             _, loss = sess.run([train_op,cross_entropy_loss], feed_dict=feed_dict)
 
