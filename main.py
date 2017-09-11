@@ -101,8 +101,10 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     
     _input = tf.add(_input_skip, layer9)
 
+    layer101 = tf.layers.conv2d_transpose(_input, num_classes,4,strides=(4,4), padding='same',
+                                kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-4))
 
-    layer10 = tf.layers.conv2d_transpose(_input, num_classes,16,strides=(8,8), padding='same',
+    layer10 = tf.layers.conv2d_transpose(layer101, num_classes,4,strides=(4,4), padding='same',
                                 kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-4))
 
 
