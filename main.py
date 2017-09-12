@@ -159,6 +159,8 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     # TODO: Implement function 
 
     sess.run(tf.global_variables_initializer())
+    saver = tf.train.Saver()
+
     #sess.run(tf.local_variables_initializer())
 
     for e in range(epochs):
@@ -171,6 +173,9 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
             _, loss = sess.run([train_op,cross_entropy_loss], feed_dict=feed_dict)
 
             print('epoch %i, loss: %f'%(e,loss))
+
+    save_path = saver.save(sess, "model.ckpt")
+    print("Model saved in file: %s" % save_path)
 
 tests.test_train_nn(train_nn)
 
@@ -202,8 +207,7 @@ def run():
 
         correct_label = tf.placeholder(tf.int32)
         learning_rate = tf.placeholder(tf.float32)
-        saver = tf.train.Saver()
-
+        
         image_input, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
         nn_last_layer = layers(layer3_out, layer4_out, layer7_out, num_classes)
         logits, train_op, cross_entropy_loss = optimize(nn_last_layer, correct_label, learning_rate, num_classes)
@@ -215,8 +219,7 @@ def run():
         # TODO: Save inference data using helper.save_inference_samples
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, image_input)
 
-        save_path = saver.save(sess, "model.ckpt")
-        print("Model saved in file: %s" % save_path)
+        
         # OPTIONAL: Apply the trained model to a video
 
 
