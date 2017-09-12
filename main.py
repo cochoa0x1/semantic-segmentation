@@ -159,7 +159,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     # TODO: Implement function 
 
     sess.run(tf.global_variables_initializer())
-    saver = tf.train.Saver()
+    #saver = tf.train.Saver()
 
     #sess.run(tf.local_variables_initializer())
 
@@ -174,8 +174,8 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 
             print('epoch %i, loss: %f'%(e,loss))
 
-    save_path = saver.save(sess, "model.ckpt")
-    print("Model saved in file: %s" % save_path)
+    #save_path = saver.save(sess, "model.ckpt")
+    #print("Model saved in file: %s" % save_path)
 
 tests.test_train_nn(train_nn)
 
