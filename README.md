@@ -18,6 +18,8 @@ The entire network including any updates to the vgg component on the [Kitti Road
 
 The full set of result images can be found here:
 
+[Results](https://github.com/cochoa0x1/semantic-segmentation/releases/tag/v1.0.0)
+
 Here are some of results
 
 ![](images/um_000040.png)
