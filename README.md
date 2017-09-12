@@ -1,36 +1,27 @@
 # Semantic Segmentation
 ### Introduction
-In this project, you'll label the pixels of a road in images using a Fully Convolutional Network (FCN).
 
-### Setup
-##### Frameworks and Packages
-Make sure you have the following is installed:
- - [Python 3](https://www.python.org/)
- - [TensorFlow](https://www.tensorflow.org/)
- - [NumPy](http://www.numpy.org/)
- - [SciPy](https://www.scipy.org/)
-##### Dataset
-Download the [Kitti Road dataset](http://www.cvlibs.net/datasets/kitti/eval_road.php) from [here](http://www.cvlibs.net/download.php?file=data_road.zip).  Extract the dataset in the `data` folder.  This will create the folder `data_road` with all the training a test images.
+This project implements a Fully Convolutional Network (FCN) for scene understanding. It learns to classify road and not road at the per-pixel level. Implemented in Tensorlfow.
 
-### Start
-##### Implement
-Implement the code in the `main.py` module indicated by the "TODO" comments.
-The comments indicated with "OPTIONAL" tag are not required to complete.
-##### Run
-Run the following command to run the project:
-```
-python main.py
-```
-**Note** If running this in Jupyter Notebook system messages, such as those regarding test status, may appear in the terminal rather than the notebook.
+##### Network
 
-### Submission
-1. Ensure you've passed all the unit tests.
-2. Ensure you pass all points on [the rubric](https://review.udacity.com/#!/rubrics/989/view).
-3. Submit the following in a zip file.
- - `helper.py`
- - `main.py`
- - `project_tests.py`
- - Newest inference images from `runs` folder
- 
- ## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+The FCN is composed of two parts, the convolutional part which functions as a classifier and a deconvolutional part that upsamples the results to the desired image size. The image classifier used here was the vgg16 network without its fully connected layers. The last convolutional layer was instead transformed via a 1x1 convolution and upsampled. Skip connections between prior convolutional layers were also added at each deconvolutional step. See the architecture below from this paper [Fully Convolutional Networks for Semantic Segmentation](https://people.eecs.berkeley.edu/~jonlong/long_shelhamer_fcn.pdf).
+
+![](images/fcn.png)
+
+
+##### Training
+The entire network including any updates to the vgg component on the [Kitti Road dataset](http://www.cvlibs.net/datasets/kitti/eval_road.php) from [here](http://www.cvlibs.net/download.php?file=data_road.zip) on a GTX1080. A batch size of 16 image was used for 40 epochs. However after just 30 epochs the mean cross entropy loss leveled off and early stopping could have been used. No image augmentation was used and might help however, the FCN paper above suggest it would not help dramatically. Final mean loss was about .035.
+
+
+##### Results
+
+The full set of result images can be found here:
+
+Here are some of results
+
+![](images/um_000040.png)
+![](images/umm_000032.png)
+![](images/umm_000067.png)
+![](images/uu_000057.png)
+
