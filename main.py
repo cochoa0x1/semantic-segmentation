@@ -202,6 +202,7 @@ def run():
 
         correct_label = tf.placeholder(tf.int32)
         learning_rate = tf.placeholder(tf.float32)
+        saver = tf.train.Saver()
 
         image_input, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
         nn_last_layer = layers(layer3_out, layer4_out, layer7_out, num_classes)
@@ -209,12 +210,15 @@ def run():
 
 
         # TODO: Train NN using the train_nn function
-        train_nn(sess, 40, 8, get_batches_fn, train_op, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
+        train_nn(sess, 40, 16, get_batches_fn, train_op, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
 
         # TODO: Save inference data using helper.save_inference_samples
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, image_input)
 
+        save_path = saver.save(sess, "model.ckpt")
+        print("Model saved in file: %s" % save_path)
         # OPTIONAL: Apply the trained model to a video
+
 
 
 if __name__ == '__main__':
